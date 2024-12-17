@@ -1,0 +1,20 @@
+def writeUserInput(testCaseName, getUrl, variableName, apiBody, expectedResult):
+    fileName = testCaseName+".py"
+    f = open(fileName, 'a')
+    f.write(f'from apiCall import apiCallFrom\n\n\n')
+    f.write(f"urlOfApi=r'''{getUrl}'''\n\n")
+    f.write(f"expectedResultArry={expectedResult}\n\n")
+    f.write(f"{variableName}=r'''{apiBody}'''\n\n")
+    f.write(f"passCount=0\n")
+    f.write(f"failCount=0\n")
+    f.write(f'response=apiCallFrom(urlOfApi, {variableName})\n')
+    f.write(f'for expectedResult in expectedResultArry:\n')
+    f.write(f'\tif expectedResult in response:\n')
+    f.write('\t\tprint(f"{expectedResult} is present : PASS")\n')
+    f.write(f'\t\tpassCount+=1\n')
+    f.write(f'\telse:\n')
+    f.write('\t\tprint(f"{expectedResult} is not present : FAIL")\n')
+    f.write(f'\t\tfailCount+=1\n')
+    f.write('print(f"Total num of pass count : {passCount}")\n')
+    f.write('print(f"Total num of fail count : {failCount}")\n')
+    
