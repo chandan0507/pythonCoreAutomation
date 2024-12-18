@@ -1,8 +1,11 @@
 from apiCall import apiCallFrom
+from postApiCall import apiCall
 
 
 TotalPass=0
 TotalFail=0
+
+productName="vocus"
 
 urlOfApi=r'''http://10.0.1.127:8001/fcgi-bin/services/SubscriberProv'''
 
@@ -12,7 +15,7 @@ apiBodyVar=r'''<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/
 
 userDefinedDescription=r'Delete Subscriber'
 
-def DeleteSubscriber(getUrl, apiBodyVar, description, expectedResult):
+def DeleteSubscriber(apiBodyVar, description, expectedResult):
 	passCount=0
 	failCount=0
 
@@ -29,14 +32,14 @@ def DeleteSubscriber(getUrl, apiBodyVar, description, expectedResult):
 	print(f"Fail count : {failCount}")
 
 	if failCount > 0:
-		print(f"{userDefinedDescription} : FAIL")
+		print(f"{description} : FAIL")
 		return passCount, failCount
 	else:
-		print(f"{userDefinedDescription} : PASS")
+		print(f"{description} : PASS")
 		return passCount, failCount
 
 
-DeleteSubscriber=DeleteSubscriber(urlOfApi, apiBodyVar, userDefinedDescription, expectedResultArry)
+DeleteSubscriber=DeleteSubscriber(apiBodyVar, userDefinedDescription, expectedResultArry)
 
 TotalPass+=DeleteSubscriber[0]
 TotalFail+=DeleteSubscriber[1]
@@ -51,7 +54,7 @@ apiBodyVar=r'''<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/
 
 userDefinedDescription=r'Create Subscriber'
 
-def CreateSubscriber(getUrl, apiBodyVar, description, expectedResult):
+def CreateSubscriber(apiBodyVar, description, expectedResult):
 	passCount=0
 	failCount=0
 
@@ -68,14 +71,14 @@ def CreateSubscriber(getUrl, apiBodyVar, description, expectedResult):
 	print(f"Fail count : {failCount}")
 
 	if failCount > 0:
-		print(f"{userDefinedDescription} : FAIL")
+		print(f"{description} : FAIL")
 		return passCount, failCount
 	else:
-		print(f"{userDefinedDescription} : PASS")
+		print(f"{description} : PASS")
 		return passCount, failCount
 
 
-CreateSubscriber=CreateSubscriber(urlOfApi, apiBodyVar, userDefinedDescription, expectedResultArry)
+CreateSubscriber=CreateSubscriber(apiBodyVar, userDefinedDescription, expectedResultArry)
 
 TotalPass+=CreateSubscriber[0]
 TotalFail+=CreateSubscriber[1]
@@ -87,5 +90,9 @@ print('Total Fail : ', TotalFail)
 
 if (TotalFail > 0):
 	print('createSubsApi Test case : FAILED')
+	result="FAIL"
 else:
 	print('createSubsApi Test case : PASSED')
+	result="PASS"
+captureResponse = apiCall('createSubsApi.py', productName, result)
+print(captureResponse[0].text.strip(), 'testRunId :', captureResponse[1], 'resultCode :', captureResponse[0].status_code)
