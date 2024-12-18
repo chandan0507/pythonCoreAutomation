@@ -1,6 +1,9 @@
 from apiCall import apiCallFrom
 
 
+TotalPass=0
+TotalFail=0
+
 urlOfApi=r'''http://10.0.1.127:8001/fcgi-bin/services/SubscriberProv'''
 
 expectedResultArry=['<resultCode xmlns="http://soap.provisioning.sdr.s2200.product.tayana.com/xsd">0</resultCode>']
@@ -22,16 +25,21 @@ def DeleteSubscriber(getUrl, apiBodyVar, description, expectedResult):
 		else:
 			print(f"{expectedResult} is not present in response : string match failed")
 			failCount+=1
-	print(f"Total num of pass count : {passCount}")
-	print(f"Total num of fail count : {failCount}")
+	print(f"Pass count : {passCount}")
+	print(f"Fail count : {failCount}")
 
 	if failCount > 0:
 		print(f"{userDefinedDescription} : FAIL")
+		return passCount, failCount
 	else:
 		print(f"{userDefinedDescription} : PASS")
+		return passCount, failCount
 
 
-DeleteSubscriber(urlOfApi, apiBodyVar, userDefinedDescription, expectedResultArry)
+DeleteSubscriber=DeleteSubscriber(urlOfApi, apiBodyVar, userDefinedDescription, expectedResultArry)
+
+TotalPass+=DeleteSubscriber[0]
+TotalFail+=DeleteSubscriber[1]
 
 
 
@@ -56,16 +64,28 @@ def CreateSubscriber(getUrl, apiBodyVar, description, expectedResult):
 		else:
 			print(f"{expectedResult} is not present in response : string match failed")
 			failCount+=1
-	print(f"Total num of pass count : {passCount}")
-	print(f"Total num of fail count : {failCount}")
+	print(f"Pass count : {passCount}")
+	print(f"Fail count : {failCount}")
 
 	if failCount > 0:
 		print(f"{userDefinedDescription} : FAIL")
+		return passCount, failCount
 	else:
 		print(f"{userDefinedDescription} : PASS")
+		return passCount, failCount
 
 
-CreateSubscriber(urlOfApi, apiBodyVar, userDefinedDescription, expectedResultArry)
+CreateSubscriber=CreateSubscriber(urlOfApi, apiBodyVar, userDefinedDescription, expectedResultArry)
+
+TotalPass+=CreateSubscriber[0]
+TotalFail+=CreateSubscriber[1]
 
 
 
+print('Total Pass : ', TotalPass)
+print('Total Fail : ', TotalFail)
+
+if (TotalFail > 0):
+	print('createSubsApi Test case : FAILED')
+else:
+	print('createSubsApi Test case : PASSED')
